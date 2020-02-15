@@ -49,7 +49,7 @@ def formatDf(df):
     df = df.merge(edu_map, on='EdLevel', how='left')
     df = df.merge(country_map, on='Country', how='left')
     df = df.drop(['EdLevel', 'Country', 'Unnamed: 0_x', 'Unnamed: 0_y'], axis=1)
-    return df[[['YearsCode', 'CountryAvgComp', 'EducationAvgComp',
+    return df[['YearsCode', 'CountryAvgComp', 'EducationAvgComp',
        'Academic researcher', 'Data or business analyst',
        'Data scientist or machine learning specialist',
        'Database administrator', 'Designer', 'DevOps specialist',
@@ -81,7 +81,7 @@ class PredictSalary(Resource):
             query[i] = args[i]
 
         formatted = formatDf(pd.DataFrame(query, index=[0]))
-        print(formatted.head())
+        # print(formatted.head())
 
         return abs(model.predict(formatted)[0])
 
