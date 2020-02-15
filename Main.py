@@ -49,9 +49,8 @@ def formatDf(df):
     df = df.merge(edu_map, on='EdLevel', how='left')
     df = df.merge(country_map, on='Country', how='left')
     df = df.drop(['EdLevel', 'Country', 'Unnamed: 0_x', 'Unnamed: 0_y'], axis=1)
-    return df[['YearsCode', 'Age', 'CountryAvgComp', 'EducationAvgComp',
-       'MajorAvgComp', 'GenderCode', 'NewOrgSize', 'Academic researcher',
-       'Data or business analyst',
+    return df[[['YearsCode', 'CountryAvgComp', 'EducationAvgComp',
+       'Academic researcher', 'Data or business analyst',
        'Data scientist or machine learning specialist',
        'Database administrator', 'Designer', 'DevOps specialist',
        'Developer, QA or test', 'Developer, back-end',
@@ -59,21 +58,19 @@ def formatDf(df):
        'Developer, embedded applications or devices', 'Developer, front-end',
        'Developer, full-stack', 'Developer, game or graphics',
        'Developer, mobile', 'Educator', 'Engineer, data',
-       'Engineer, site reliability', 'Engineering manager',
-       'Marketing or sales professional', 'Product manager', 'Scientist',
-       'Senior executive/VP', 'Student', 'System administrator', 'Assembly',
-       'Bash/Shell/PowerShell', 'C', 'C#', 'C++', 'Clojure', 'Dart', 'Elixir',
-       'Erlang', 'F#', 'Go', 'HTML/CSS', 'Java', 'JavaScript', 'Kotlin',
-       'Objective-C', 'Other(s):', 'PHP', 'Python', 'R', 'Ruby', 'Rust', 'SQL',
-       'Scala', 'Swift', 'TypeScript', 'VBA', 'WebAssembly', 'Cassandra',
-       'Couchbase', 'DynamoDB', 'Elasticsearch', 'Firebase', 'MariaDB',
+       'Engineer, site reliability', 'Engineering manager', 'Product manager',
+       'Scientist', 'Senior executive/VP', 'Student', 'System administrator',
+       'Assembly', 'Bash/Shell/PowerShell', 'C', 'C#', 'C++', 'Go', 'HTML/CSS',
+       'Java', 'JavaScript', 'Kotlin', 'Objective-C', 'Other(s):', 'PHP',
+       'Python', 'R', 'Ruby', 'Rust', 'SQL', 'Scala', 'Swift', 'TypeScript',
+       'VBA', 'Cassandra', 'DynamoDB', 'Elasticsearch', 'Firebase', 'MariaDB',
        'Microsoft SQL Server', 'MongoDB', 'MySQL', 'Oracle', 'PostgreSQL',
        'Redis', 'SQLite', 'Linux', 'Windows', 'Android',
        'Google Cloud Platform', 'AWS', 'Docker', 'Heroku', 'MacOS', 'Slack',
-       'IBM Cloud or Watson', 'iOS', 'Microsoft Azure', 'WordPress', 'Arduino',
-       'Raspberry Pi', 'Kubernetes', 'Express', 'Ruby on Rails',
-       'Angular/Angular.js', 'ASP.NET', 'Django', 'Flask', 'jQuery', 'Vue.js',
-       'Spring', 'React.js', 'Laravel', 'Drupal']]
+       'iOS', 'Microsoft Azure', 'WordPress', 'Arduino', 'Raspberry Pi',
+       'Kubernetes', 'Express', 'Ruby on Rails', 'Angular/Angular.js',
+       'ASP.NET', 'Django', 'Flask', 'jQuery', 'Vue.js', 'Spring', 'React.js',
+       'Laravel']]
 
 class PredictSalary(Resource):
     def post(self):
