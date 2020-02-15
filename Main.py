@@ -60,10 +60,9 @@ class PredictSalary(Resource):
             query[i] = args[i]
 
         formatted = formatDf(pd.DataFrame(query, index=[0]))
+        print(formatted.head())
 
         return abs(model.predict(formatted)[0])
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
