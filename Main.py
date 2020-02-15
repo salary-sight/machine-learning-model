@@ -2,7 +2,6 @@ from flask import Flask
 from flask_restful import reqparse, abort, Api, Resource
 import pickle
 import pandas as pd
-import numpy as np
 
 app = Flask(__name__)
 api = Api(app)
@@ -62,7 +61,7 @@ class PredictSalary(Resource):
 
         formatted = formatDf(pd.DataFrame(query, index=[0]))
 
-        return model.predict(formatted)[0]
+        return abs(model.predict(formatted)[0])
 
 
 
