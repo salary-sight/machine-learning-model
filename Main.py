@@ -6,6 +6,7 @@ import numpy as np
 
 app = Flask(__name__)
 api = Api(app)
+
 edu_map = pd.read_csv('edu_map.csv')
 country_map = pd.read_csv('country_map.csv')
 
@@ -44,6 +45,13 @@ jobs = ['Academic researcher', 'Data or business analyst',
 for s in jobs:
     parser.add_argument(s, required=True)
 
+
+def formatDf(df):
+    df = df.merge(edu_map, on='EdLevel', how='left')
+    df = df.merge(country_map, on='Country', how='left')
+    df = df.drop(['EdLevel', 'Country', 'Unnamed: 0_x', 'Unnamed: 0_y'], axis=1)
+    return df
+
 class PredictSalary(Resource):
     def post(self):
         args = parser.parse_args()
@@ -52,14 +60,11 @@ class PredictSalary(Resource):
         for i in args:
             query[i] = args[i]
 
-        return predict(pd.DataFrame(query))
+        formatted = formatDf(pd.DataFrame(query, index=[0]))
+
+        return model.predict(formatted)[0]
 
 
-def predict(df):
-    df = df.merge(edu_map, on='EdLevel', how='left')
-    df = df.merge(country_map, on='Country', how='left')
-    df = df.drop(['EdLevel', 'Country', 'Unnamed: 0_x', 'Unnamed: 0_y'], axis=1)
-    return df
 
 if __name__ == '__main__':
     app.run(debug=True)
