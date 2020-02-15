@@ -6,6 +6,8 @@ import numpy as np
 
 app = Flask(__name__)
 api = Api(app)
+edu_map = pd.read_csv('edu_map.csv')
+country_map = pd.read_csv('country_map.csv')
 
 # # create new model object
 model = pickle.load(open("linear_model.sav", "rb"))
@@ -54,7 +56,10 @@ class PredictSalary(Resource):
 
 
 def predict(df):
-    return {}
+    df = df.merge(edu_map, on='EdLevel', how='left')
+    df = df.merge(country_map, on='Country', how='left')
+    df = df.drop(['EdLevel', 'Country', 'Unnamed: 0_x', 'Unnamed: 0_y'], axis=1)
+    return df
 
 if __name__ == '__main__':
     app.run(debug=True)
