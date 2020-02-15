@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import reqparse, abort, Api, Resource
 import pickle
 import pandas as pd
+import pycountry
 
 app = Flask(__name__)
 api = Api(app)
@@ -14,7 +15,6 @@ model = pickle.load(open("linear_model.sav", "rb"))
 
 parser = reqparse.RequestParser()
 parser.add_argument('YearsCode', required=True, type=int)
-parser.add_argument('Country', required=True)
 parser.add_argument('EdLevel', required=True)
 
 skills = ['Assembly', 'Bash/Shell/PowerShell', 'C', 'C#', 'C++', 'Go', 'HTML/CSS',
@@ -80,10 +80,24 @@ class PredictSalary(Resource):
         for i in args:
             query[i] = args[i]
 
-        formatted = formatDf(pd.DataFrame(query, index=[0]))
-        # print(formatted.head())
 
-        return abs(model.predict(formatted)[0])
+        ret = []
+
+        for i in country_map.Country:
+            query["Country"] = i
+            formatted = formatDf(pd.DataFrame(query, index=[0]))
+            # print(pycountry.countries.search_fuzzy(i))
+            search = pycountry.countries.search_fuzzy(i)
+            country = search[0]
+            # if len(search) > 1:
+            #     print(i, search)
+            ret.append({
+                "id": country.alpha_2,
+                "name": country.name,
+                "value": abs(model.predict(formatted)[0])
+            })
+
+        return {"data": ret}
 
 if __name__ == '__main__':
     app.run(debug=True)
