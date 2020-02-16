@@ -6,7 +6,7 @@ import pandas as pd
 import pycountry
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 api = Api(app)
 
 edu_map = pd.read_csv('edu_map.csv')
