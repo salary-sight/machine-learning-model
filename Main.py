@@ -6,14 +6,14 @@ import pandas as pd
 import pycountry
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 api = Api(app)
 
-edu_map = pd.read_csv('edu_map.csv')
-country_map = pd.read_csv('country_map.csv')
+edu_map = pd.read_csv(r'/Users/xiangqian.hongibm.com/Desktop/HTV/machine-learning-model/edu_map.csv')
+country_map = pd.read_csv(r'/Users/xiangqian.hongibm.com/Desktop/HTV/machine-learning-model/country_map.csv')
 
 # # create new model object
-model = pickle.load(open("linear_model.sav", "rb"))
+model = pickle.load(open(r"/Users/xiangqian.hongibm.com/Desktop/HTV/machine-learning-model/linear_model.sav", "rb"))
 
 parser = reqparse.RequestParser()
 parser.add_argument('YearsCode', required=True, type=int)
@@ -121,4 +121,6 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 api.add_resource(PredictSalary, '/')
+
+
 
