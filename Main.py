@@ -16,6 +16,9 @@ model = pickle.load(open("linear_model.sav", "rb"))
 parser = reqparse.RequestParser()
 parser.add_argument('YearsCode', required=True, type=int)
 parser.add_argument('EdLevel', required=True)
+parser.add_argument('Skills', required=True)
+parser.add_argument('Experiences', required=True)
+
 
 skills = ['Assembly', 'Bash/Shell/PowerShell', 'C', 'C#', 'C++', 'Go', 'HTML/CSS',
           'Java', 'JavaScript', 'Kotlin', 'Objective-C', 'Other(s):', 'PHP',
@@ -28,8 +31,8 @@ skills = ['Assembly', 'Bash/Shell/PowerShell', 'C', 'C#', 'C++', 'Go', 'HTML/CSS
           'Kubernetes', 'Express', 'Ruby on Rails', 'Angular/Angular.js',
           'ASP.NET', 'Django', 'Flask', 'jQuery', 'Vue.js', 'Spring', 'React.js',
           'Laravel']
-for s in skills:
-    parser.add_argument(s, required=True)
+# for s in skills:
+#     parser.add_argument(s, required=True)
 
 jobs = ['Academic researcher', 'Data or business analyst',
         'Data scientist or machine learning specialist',
@@ -41,8 +44,8 @@ jobs = ['Academic researcher', 'Data or business analyst',
         'Developer, mobile', 'Educator', 'Engineer, data',
         'Engineer, site reliability', 'Engineering manager', 'Product manager',
         'Scientist', 'Senior executive/VP', 'Student', 'System administrator']
-for s in jobs:
-    parser.add_argument(s, required=True)
+# for s in jobs:
+#     parser.add_argument(s, required=True)
 
 
 def formatDf(df):
@@ -78,7 +81,20 @@ class PredictSalary(Resource):
 
         query = {}
         for i in args:
-            query[i] = args[i]
+            if i == 'Skills':
+                for j in skills:
+                    if j in i:
+                        query[j] = 1
+                    else:
+                        query[j] = 0
+            elif i == 'Experiences':
+                for j in jobs:
+                    if j in i:
+                        query[j] = 1
+                    else:
+                        query[j] = 0
+            else:
+                query[i] = args[i]
 
 
         ret = []
